@@ -4,11 +4,11 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
 	"os/signal"
+	"path"
 	"sync"
 	"syscall"
 	"time"
@@ -227,7 +227,7 @@ func (g *generator) writeFile(content []byte) error {
 	}
 
 	// write to a temp file first so we can copy it into place with a single atomic operation
-	tmp, err := ioutil.TempFile("", fmt.Sprintf("kube-gen-%d", time.Now().UnixNano()))
+	tmp, err := os.CreateTemp(path.Dir(g.Config.Output), fmt.Sprintf("kube-gen-%d", time.Now().UnixNano()))
 	defer func() {
 		tmp.Close()
 		os.Remove(tmp.Name())
@@ -250,7 +250,7 @@ func (g *generator) writeFile(content []byte) error {
 		if err := setFileModeAndOwnership(tmp, fi); err != nil {
 			return err
 		}
-		if oldContent, err = ioutil.ReadFile(g.Config.Output); err != nil {
+		if oldContent, err = os.ReadFile(g.Config.Output); err != nil {
 			return fmt.Errorf("error comparing old version: %w", err)
 		}
 	}

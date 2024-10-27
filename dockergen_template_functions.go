@@ -29,9 +29,7 @@ SOFTWARE.
 package kubegen
 
 import (
-	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math"
 	"os"
@@ -52,20 +50,10 @@ func arrayClosest(values []string, input string) string {
 	return best
 }
 
-// coalesce returns the first non nil argument
-func coalesce(input ...any) any {
-	for _, v := range input {
-		if v != nil {
-			return v
-		}
-	}
-	return nil
-}
-
 // dirList returns a list of files in the specified path
 func dirList(path string) ([]string, error) {
 	names := []string{}
-	files, err := ioutil.ReadDir(path)
+	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Printf("Template error: %v", err)
 		return names, nil
@@ -74,60 +62,6 @@ func dirList(path string) ([]string, error) {
 		names = append(names, f.Name())
 	}
 	return names, nil
-}
-
-// first returns first item in the array or nil if the
-// input is nil or empty
-func first(input any) any {
-	if input == nil {
-		return nil
-	}
-
-	arr := reflect.ValueOf(input)
-
-	if arr.Len() == 0 {
-		return nil
-	}
-
-	return arr.Index(0).Interface()
-}
-
-func keys(input any) (any, error) {
-	if input == nil {
-		return nil, nil //nolint:nilnil
-	}
-
-	val := reflect.ValueOf(input)
-	if val.Kind() != reflect.Map {
-		return nil, fmt.Errorf("cannot call keys on a non-map value: %v", input)
-	}
-
-	vk := val.MapKeys()
-	k := make([]any, val.Len())
-	for i := range k {
-		k[i] = vk[i].Interface()
-	}
-
-	return k, nil
-}
-
-// last returns last item in the array
-func last(input any) any {
-	if input == nil {
-		return nil
-	}
-	arr := reflect.ValueOf(input)
-	if arr.Len() == 0 {
-		return nil
-	}
-	return arr.Index(arr.Len() - 1).Interface()
-}
-
-func mapContains(item map[string]string, key string) bool {
-	if _, ok := item[key]; ok {
-		return true
-	}
-	return false
 }
 
 // Generalized groupBy function
@@ -188,21 +122,6 @@ func groupByKeys(entries any, key string) ([]string, error) {
 		ret = append(ret, k)
 	}
 	return ret, nil
-}
-
-func dict(values ...any) (map[string]any, error) {
-	if len(values)%2 != 0 {
-		return nil, errors.New("invalid dict call")
-	}
-	dict := make(map[string]any, len(values)/2)
-	for i := 0; i < len(values); i += 2 {
-		key, ok := values[i].(string)
-		if !ok {
-			return nil, errors.New("dict keys must be strings")
-		}
-		dict[key] = values[i+1]
-	}
-	return dict, nil
 }
 
 // when returns the trueValue when the condition is true and the falseValue otherwise

@@ -4,7 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -130,14 +130,14 @@ func parseWait(w string) (min time.Duration, max time.Duration, err error) {
 }
 
 func tmplFromStdin() ([]byte, error) {
-	return ioutil.ReadAll(os.Stdin)
+	return io.ReadAll(os.Stdin)
 }
 
 func main() {
 	parseFlags()
 
 	if quiet {
-		log.SetOutput(ioutil.Discard)
+		log.SetOutput(io.Discard)
 	}
 
 	if showVersion {

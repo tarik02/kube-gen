@@ -4,10 +4,20 @@ import (
 	"bytes"
 	"path/filepath"
 	"text/template"
+
+	"github.com/Masterminds/sprig/v3"
 )
 
 func newTemplate(name string) *template.Template {
-	return template.New(name).Funcs(Funcs)
+	tmpl := template.New(name).Funcs(sprig.FuncMap()).Funcs(Funcs)
+	tmpl.Funcs(template.FuncMap{
+		"include": func(name string, value any) (string, error) {
+			buf := &bytes.Buffer{}
+			err := tmpl.ExecuteTemplate(buf, name, value)
+			return buf.String(), err
+		},
+	})
+	return tmpl
 }
 
 // Executes a template located at path with the specified data
