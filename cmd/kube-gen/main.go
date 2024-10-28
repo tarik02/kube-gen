@@ -12,8 +12,8 @@ import (
 	"strings"
 	"time"
 
-	kubegen "github.com/kylemcc/kube-gen"
-	"github.com/kylemcc/kube-gen/cmd/kube-gen/version"
+	kubegen "github.com/tarik02/kube-gen"
+	"github.com/tarik02/kube-gen/cmd/kube-gen/version"
 )
 
 type stringSlice []string
