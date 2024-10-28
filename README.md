@@ -1,8 +1,7 @@
 # kube-gen
 
-![latest 0.4.0](https://img.shields.io/badge/latest-0.4.0-green.svg?style=flat)
-[![license](http://img.shields.io/badge/license-BSD-red.svg?style=flat)](https://raw.githubusercontent.com/kylemcc/kube-gen/master/LICENSE)
-[![Check Commit](https://github.com/kylemcc/kube-gen/actions/workflows/check.yml/badge.svg)](https://github.com/kylemcc/kube-gen/actions/workflows/check.yml)
+[![license](http://img.shields.io/badge/license-BSD-red.svg?style=flat)](https://raw.githubusercontent.com/tarik02/kube-gen/master/LICENSE)
+[![Check Commit](https://github.com/tarik02/kube-gen/actions/workflows/check.yml/badge.svg)](https://github.com/tarik02/kube-gen/actions/workflows/check.yml)
 
 
 `kube-gen` is a template rendering tool that generates files and executes commands based on Kubernetes events and metadata.
@@ -11,22 +10,16 @@
 
 #### Binary Download
 
-See the [Releases](https://github.com/kylemcc/kube-gen/releases) page
+See the [Releases](https://github.com/tarik02/kube-gen/releases) page
 
 #### Docker Container
 
 `kube-gen` can be run as a standalone container, or bundled in a container with other applications.
 
-Images are available on [Dockerhub](https://hub.docker.com/r/kylemcc/kube-gen):
+Images are available on [Github Package Registry](https://github.com/tarik02/kube-gen/pkgs/container/kube-gen):
 
 ```sh
-$ docker run kylemcc/kube-gen ...
-```
-
-Or [Github Package Registry](https://github.com/kylemcc/kube-gen/pkgs/container/kube-gen%2Fkube-gen):
-
-```sh
-$ docker run ghcr.io/kylemcc/kube-gen/kube-gen ...
+$ docker run ghcr.io/tarik02/kube-gen ...
 ```
 
 
@@ -83,4 +76,7 @@ The `-watch` flag configures `kube-gen` to watch the API for changes to `Service
 
 ## Template Language
 
-`kube-gen` supports templates written in Go`s [text/template](https://golang.org/pkg/text/template/) language. It supports all of the [built in](https://golang.org/pkg/text/template/#hdr-Functions) functions, as well as numerous custom functions described below. Many of the custom functions (and the documentation for those functions) have been borrowed from [docker-gen](https://github.com/jwilder/docker-gen). Those functions, along with the accompanying License and Copyright are located in the [dockergen_template_functions.go](https://github.com/kylemcc/kube-gen/blob/master/dockergen_template_functions.go) source file.
+- `kube-gen` supports templates written in Go`s [text/template](https://golang.org/pkg/text/template/) language.
+- it supports all of the [built in](https://golang.org/pkg/text/template/#hdr-Functions) functions.
+- it supports all of the [sprig](http://masterminds.github.io/sprig/) functions.
+- it supports subset of [docker-gen](https://github.com/jwilder/docker-gen) functions. Implementation, along with the accompanying License and Copyright are located in the [dockergen_template_functions.go](https://github.com/tarik02/kube-gen/blob/master/dockergen_template_functions.go) source file.

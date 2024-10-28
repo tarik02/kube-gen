@@ -9,6 +9,7 @@ import (
 	"os/exec"
 	"os/signal"
 	"path"
+	"slices"
 	"sync"
 	"syscall"
 	"time"
@@ -61,9 +62,9 @@ func NewGenerator(c Config) (Generator, error) {
 	return &generator{
 		Config:   c,
 		Client:   kclient,
-		loadPods: len(c.ResourceTypes) == 0 || containsString(c.ResourceTypes, "pods"),
-		loadSvcs: len(c.ResourceTypes) == 0 || containsString(c.ResourceTypes, "services"),
-		loadEps:  len(c.ResourceTypes) == 0 || containsString(c.ResourceTypes, "endpoints"),
+		loadPods: len(c.ResourceTypes) == 0 || slices.Contains(c.ResourceTypes, "pods"),
+		loadSvcs: len(c.ResourceTypes) == 0 || slices.Contains(c.ResourceTypes, "services"),
+		loadEps:  len(c.ResourceTypes) == 0 || slices.Contains(c.ResourceTypes, "endpoints"),
 	}, err
 }
 
